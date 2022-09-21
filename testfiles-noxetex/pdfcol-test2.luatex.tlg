@@ -57,9 +57,3 @@ Type  H <return>  for immediate help.
 l. ...    \Expect*{\the\wd0}{0.0pt}
                                 %
 (That was another \errmessage.)
-[1
-Missing character: There is no ^^@ (U+0000) in font [lmroman10-regular]:+tlig;!
-Missing character: There is no ^^@ (U+0000) in font [lmroman10-regular]:+tlig;!
-Missing character: There is no ^^@ (U+0000) in font [lmroman10-regular]:+tlig;!
-Missing character: There is no ^^@ (U+0000) in font [lmroman10-regular]:+tlig;!
-]
