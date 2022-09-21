@@ -14,7 +14,6 @@ maxprintline=10000
 checkruns = 2
 
 tdslocations={
-"doc/latex/pdfcol/pdfcol-example.tex",
 "doc/latex/pdfcol/pdfcol.pdf",
 "source/latex/pdfcol/pdfcol.dtx",
 "tex/generic/pdfcol/pdfcol.sty",
