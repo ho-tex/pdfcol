@@ -191,6 +191,7 @@ and the derived files
 % defines and uses a main color stack since version v0.04b.
 % Package \xpackage{pdfcol} is intended for package writers.
 % It defines macros for setting and maintaining new color stacks.
+% It works also with lua\TeX.
 % \end{abstract}
 %
 % \tableofcontents
@@ -217,12 +218,12 @@ and the derived files
 %
 % \begin{itemize}
 % \item
-%   \pdfTeX\ 1.40 or greater.
+%   \pdfTeX\ 1.40 or greater or lua\TeX.
 % \item
-%   \pdfTeX in PDF mode. (I don't know a DVI driver that
+%   \pdfTeX or lua\TeX\ in PDF mode. (I don't know a DVI driver that
 %   support several color stacks.)
 % \item
-%   \xfile{pdftex.def} 2007/01/02 v0.04b.
+%   \xfile{pdftex.def} or \xfile{luatex.def} newer than 2007.
 % \end{itemize}
 % Package \xpackage{pdfcol} checks the requirements and
 % sets switch \cs{ifpdfcolAvailable} accordingly.
@@ -236,7 +237,7 @@ and the derived files
 % Otherwise the other interface macros in this section will
 % be disabled with a message. Also the first use of such a
 % macro will print a message. The messages are print to
-% the \xext{log} file only if \pdfTeX\ is not used in PDF mode.
+% the \xext{log} file only if \pdfTeX\ and lua\TeX\ not used in PDF mode.
 %
 % \begin{declcs}{pdfcolErrorNoStacks}
 % \end{declcs}
@@ -246,7 +247,7 @@ and the derived files
 % \begin{declcs}{pdfcolInitStack} \M{name}
 % \end{declcs}
 % A new color stack is initialized by \cs{pdfcolInitStack}.
-% The \meta{name} is used for indentifying the stack. It usually
+% The \meta{name} is used for identifying the stack. It usually
 % consists of letters and digits. (The name must survive a \cs{csname}.)
 %
 % The intension of the macro is the definition of an additional
@@ -416,13 +417,12 @@ and the derived files
 %
 %    \begin{macro}{\PDFCOL@RequirePackage}
 %    \begin{macrocode}
-\begingroup\expandafter\expandafter\expandafter\endgroup
-\expandafter\ifx\csname RequirePackage\endcsname\relax
-  \def\PDFCOL@RequirePackage#1[#2]{\input #1.sty\relax}%
-\else
+\ifcsname RequirePackage\endcsname
   \def\PDFCOL@RequirePackage#1[#2]{%
     \RequirePackage{#1}[{#2}]%
   }%
+\else
+  \def\PDFCOL@RequirePackage#1[#2]{\input #1.sty\relax}%
 \fi
 %    \end{macrocode}
 %    \end{macro}
@@ -450,11 +450,10 @@ and the derived files
 %
 %    \begin{macrocode}
 \ltx@newif\ifPDFCOL@luacolor
-\begingroup\expandafter\expandafter\expandafter\endgroup
-\expandafter\ifx\csname ver@luacolor.sty\endcsname\relax
-  \PDFCOL@luacolorfalse
-\else
+\ifcsname ver@luacolor.sty\endcsname
   \PDFCOL@luacolortrue
+\else
+  \PDFCOL@luacolorfalse
 \fi
 %    \end{macrocode}
 %
@@ -484,57 +483,18 @@ and the derived files
 %    \end{macrocode}
 %
 % \subsubsection{Check version of \pdfTeX}
-%
-%    \begin{macrocode}
-\ifpdfcolAvailable
-  \begingroup\expandafter\expandafter\expandafter\endgroup
-  \expandafter\ifx\csname pdfcolorstack\endcsname\relax
-    \pdfcolAvailablefalse
-    \PDFCOL@Message{%
-      Interface disabled because of too old pdfTeX.\MessageBreak
-      Required is version 1.40+ for \string\pdfcolorstack
-    }%
-  \fi
-\fi
-\ifpdfcolAvailable
-  \begingroup\expandafter\expandafter\expandafter\endgroup
-  \expandafter\ifx\csname pdfcolorstack\endcsname\relax
-    \pdfcolAvailablefalse
-    \PDFCOL@Message{%
-      Interface disabled because of too old pdfTeX.\MessageBreak
-      Required is version 1.40+ for \string\pdfcolorstackinit
-    }%
-  \fi
-\fi
-%    \end{macrocode}
+% The version check has been removed. We assume a new enough \pdfTeX.
 %
 % \subsubsection{Check \xfile{pdftex.def}}
-%
+% We no longer check the version but assume that it is new enough.
 %    \begin{macrocode}
 \ifpdfcolAvailable
-  \begingroup\expandafter\expandafter\expandafter\endgroup
-  \expandafter\ifx\csname @pdfcolorstack\endcsname\relax
 %    \end{macrocode}
 %    Try to load package color if it is not yet loaded (\LaTeX\ case).
 %    \begin{macrocode}
-    \begingroup\expandafter\expandafter\expandafter\endgroup
-    \expandafter\ifx\csname ver@color.sty\endcsname\relax
-      \begingroup\expandafter\expandafter\expandafter\endgroup
-      \expandafter\ifx\csname documentclass\endcsname\relax
-      \else
-        \RequirePackage[pdftex]{color}\relax
-      \fi
-    \fi
-    \begingroup\expandafter\expandafter\expandafter\endgroup
-    \expandafter\ifx\csname @pdfcolorstack\endcsname\relax
-      \pdfcolAvailablefalse
-      \PDFCOL@Message{%
-        Interface disabled because `pdftex.def'\MessageBreak
-        is not loaded or it is too old.\MessageBreak
-        Required is version 0.04b or greater%
-      }%
-    \fi
-  \fi
+   \ifcsname documentclass\endcsname
+     \RequirePackage{color}
+   \fi
 \fi
 %    \end{macrocode}
 %
@@ -750,30 +710,10 @@ and the derived files
 % \paragraph{Package.} This package is available on
 % CTAN\footnote{\CTANpkg{pdfcol}}:
 % \begin{description}
-% \item[\CTAN{macros/latex/contrib/oberdiek/pdfcol.dtx}] The source file.
-% \item[\CTAN{macros/latex/contrib/oberdiek/pdfcol.pdf}] Documentation.
+% \item[\CTAN{macros/latex/contrib/pdfcol/pdfcol.dtx}] The source file.
+% \item[\CTAN{macros/latex/contrib/pdfcol/pdfcol.pdf}] Documentation.
 % \end{description}
 %
-%
-% \paragraph{Bundle.} All the packages of the bundle `oberdiek'
-% are also available in a TDS compliant ZIP archive. There
-% the packages are already unpacked and the documentation files
-% are generated. The files and directories obey the TDS standard.
-% \begin{description}
-% \item[\CTANinstall{install/macros/latex/contrib/oberdiek.tds.zip}]
-% \end{description}
-% \emph{TDS} refers to the standard ``A Directory Structure
-% for \TeX\ Files'' (\CTANpkg{tds}). Directories
-% with \xfile{texmf} in their name are usually organized this way.
-%
-% \subsection{Bundle installation}
-%
-% \paragraph{Unpacking.} Unpack the \xfile{oberdiek.tds.zip} in the
-% TDS tree (also known as \xfile{texmf} tree) of your choice.
-% Example (linux):
-% \begin{quote}
-%   |unzip oberdiek.tds.zip -d ~/texmf|
-% \end{quote}
 %
 % \subsection{Package installation}
 %
@@ -790,9 +730,9 @@ and the derived files
 % \begin{quote}
 % \def\t{^^A
 % \begin{tabular}{@{}>{\ttfamily}l@{ $\rightarrow$ }>{\ttfamily}l@{}}
-%   pdfcol.sty & tex/generic/oberdiek/pdfcol.sty\\
-%   pdfcol.pdf & doc/latex/oberdiek/pdfcol.pdf\\
-%   pdfcol.dtx & source/latex/oberdiek/pdfcol.dtx\\
+%   pdfcol.sty & tex/generic/pdfcol/pdfcol.sty\\
+%   pdfcol.pdf & doc/latex/pdfcol/pdfcol.pdf\\
+%   pdfcol.dtx & source/latex/pdfcol/pdfcol.dtx\\
 % \end{tabular}^^A
 % }^^A
 % \sbox0{\t}^^A
