@@ -8,7 +8,7 @@ module = "pdfcol"
 textfiles = {"README.md"}
 unpackfiles = {'pdfcol.dtx'}
 
-packtdszip  = true
+packtdszip  = false
 
 maxprintline=10000
 checkruns = 2
