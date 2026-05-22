@@ -214,6 +214,9 @@ and the derived files
 % additional color stacks without the need to use the
 % low level primitives.
 %
+% The engine lua\TeX\ is supported, but if the package \xpackage{luacolor} is detected
+% (which uses attributes to set colors) the package interfaces are disabled.
+%
 % \subsection{Requirements}
 % \label{sec:req}
 %
@@ -271,6 +274,12 @@ and the derived files
 % of package \xpackage{color} (or \xpackage{xcolor}) now uses the
 % new color stack with name \meta{name}.
 %
+%
+% \begin{declcs}{pdfcolCurrentStack}
+% \end{declcs}
+% This variable holds the name of the current stack \emph{after} a switch with
+% \cs{pdfcolSwitchStack}.
+%
 % \begin{declcs}{pdfcolSetCurrentColor}
 % \end{declcs}
 % Macro \cs{pdfcolSetCurrentColor} replaces the topmost
@@ -281,6 +290,78 @@ and the derived files
 % Macro \cs{pdfcolSetCurrent} sets the color that is read in
 % the top-most entry of color stack \meta{name}. If \meta{name}
 % is empty, the default color stack is used.
+%
+% \begin{declcs}{pdfcolAftergroupSetCurrent}
+% \end{declcs}
+%  Macro \cs{pdfcolSetCurrent} sets after the current group
+%  the color that is read in the top-most entry of the current color stack
+%  (as stored in \cs{pdfcolCurrentStack}).
+%
+%  \subsection{Example (for \LaTeX)}
+%
+%  In \LaTeX{} colors can be set through the commands of the packages \xpackage{color}/\xpackage{xcolor},
+%  with the in-built commands of the \xpackage{l3color} module in \xpackage{l3kernel}.
+%  Unless the package \xpackage{luacolor} is used these commands do \emph{not} naturally
+%  respect \TeX\ groups, instead they insert literals into the PDF that start a color
+%  and the color must be reset to get back to the previous. This
+%  is typically done with a command that is inserted with \cs{aftergroup}
+%  \emph{after} the enclosing group.
+%  The command  \cs{pdfcolSwitchStack} on the other hand switches the color stack locally:
+%  At the end of the enclosing group the stack is switched back again.
+%  This can lead to the odd behaviour that a color takes it resets from the wrong stack:
+%
+%  \begin{verbatim}
+%   black           % main stack: black
+%   \color{green}
+%   green           % main stack: black, green
+%   {
+%     green
+%     \pdfcolSwitchStack{test} % test stack: black
+%     green
+%     \color{yellow} % test stack: black, yellow
+%     yellow
+%                   % End of group: switch to main stack
+%   }               % After group: color green popped from main stack
+%                   % green ends
+%                   % main stack: black
+%   after group green? No black!!
+%  \end{verbatim}
+%  {{black           % main stack: black
+%   \color{green}
+%   green           % main stack: black, green
+%   {
+%     green
+%     \pdfcolSwitchStack{test} % test stack: black
+%     green
+%     \color{yellow} % test stack: black, yellow
+%     yellow
+%                   % End of group: switch to main stack
+%   }               % After group: color green popped from main stack
+%                   % green ends
+%                   % main stack: black
+%   after group green? No black!!}}
+%
+%   To avoid such problems it is important to ensure, that colors take their
+%   reset color from the stack on which they pushed a color. This means that the
+%   stack switch must be in the outer group:
+%
+%  \begin{verbatim}
+%   black           % main stack: black
+%   \color{green}
+%   green           % main stack: black, green
+%   {
+%     green
+%     \pdfcolSwitchStack{test} % test stack: black
+%      {
+%        green
+%        \color{yellow} % test stack: black, yellow
+%        yellow         % End of group: test stack still active
+%      }
+%                   % After group: color green popped from test stack
+%                   % green ends
+%   }
+%   after group green?? No still black!!
+%  \end{verbatim}
 %
 % \StopEventually{
 % }
@@ -495,6 +576,10 @@ and the derived files
 %    \begin{macrocode}
    \ifcsname documentclass\endcsname
      \RequirePackage{color}
+     \def\pdfcol@switch@kernel@colorstack#1%
+      {\csname l__color_backend_stack_int\endcsname =\csname pdfcol@Stack@#1\endcsname}
+   \else
+     \def\pdfcol@switch@kernel@colorstack#1{}
    \fi
 \fi
 %    \end{macrocode}
@@ -577,12 +662,15 @@ and the derived files
 %    \end{macrocode}
 %    \end{macro}
 %
-%    \begin{macro}{\pdfcolSwitchStack}
+%    \begin{macro}{\pdfcolSwitchStack,\pdfcolCurrentStack}
 %    \begin{macrocode}
+  \def\pdfcolCurrentStack{}
   \def\pdfcolSwitchStack#1{%
     \pdfcolIfStackExists{#1}{%
       \expandafter\let\expandafter\@pdfcolorstack
                       \csname pdfcol@Stack@#1\endcsname
+      \pdfcol@switch@kernel@colorstack{#1}%
+      \def\pdfcolCurrentStack{#1}%
     }{%
       \pdfcol@ErrorNoStack{#1}%
     }%
@@ -597,6 +685,7 @@ and the derived files
   }%
 %    \end{macrocode}
 %    \end{macro}
+%
 %
 %    \begin{macro}{\pdfcolSetCurrent}
 %    \begin{macrocode}
@@ -614,6 +703,14 @@ and the derived files
 %    \end{macrocode}
 %    \end{macro}
 %
+%    \begin{macro}{\pdfcolAftergroupSetCurrent}
+%    \begin{macrocode}
+  \def\pdfcolAftergroupSetCurrent{%
+   \aftergroup\pdfcol@aftergroupsetcurrent}
+  \def\pdfcol@aftergroupsetcurrent{%
+   \expandafter\pdfcolSetCurrent\expandafter{\pdfcolCurrentStack}}
+%    \end{macrocode}
+%    \end{macro}
 %    \begin{macro}{\pdfcol@ErrorNoStack}
 %    \begin{macrocode}
   \def\pdfcol@ErrorNoStack#1{%
@@ -874,7 +971,7 @@ and the derived files
 %    \xpackage{iftex} package.
 %   \end{Version}
 %   \begin{Version}{2022-09-21 v1.7}
-%   \item Improved luatex compatitiblity, removed unneeded version checks.
+%   \item Improved luatex compatibility, removed unneeded version checks.
 %   \end{Version}
 % \end{History}
 %
