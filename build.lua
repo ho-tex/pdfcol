@@ -16,7 +16,7 @@ checkruns = 2
 tdslocations={
 "doc/latex/pdfcol/pdfcol.pdf",
 "source/latex/pdfcol/pdfcol.dtx",
-"tex/generic/pdfcol/pdfcol.sty",
+"tex/latex/pdfcol/pdfcol.sty",
 }
 
 
