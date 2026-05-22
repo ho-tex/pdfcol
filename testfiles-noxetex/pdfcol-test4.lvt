@@ -1,0 +1,33 @@
+\input{regression-test}
+\documentclass{article}
+
+\usepackage{xcolor}
+\usepackage{pdfcol}
+%test l3color support
+\ExplSyntaxOn
+\let\newcolor\color_select:n
+\ExplSyntaxOff
+
+\pdfcolInitStack {test}
+
+\begin{document}
+\showoutput
+aaa0
+\color{green}
+bbb0
+\newcolor{red}
+ccc0
+{
+\pdfcolSwitchStack{test}
+aaa1
+\color{yellow}
+bbb1
+\newcolor{blue}
+ccc1
+}
+aaa2
+\color{green}
+bbb2
+\newcolor{red}
+ccc2
+\end{document}
