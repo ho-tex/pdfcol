@@ -1,6 +1,6 @@
 # pdfcol
 
-Version: 2022-09-21 v1.7
+Version: 2026-05-23 v1.8
 
 Macros for setting and maintaining new color stacks.
 
@@ -12,7 +12,7 @@ It defines macros for setting and maintaining new color stacks.
 
 ## Copyright (C)
 * 2007  Heiko Oberdiek
-* 2016-2022        Oberdiek Package Support Group
+* 2016-2026        Oberdiek Package Support Group
 
 ## License
 LATEX Project Public License, version 1.3c or later.
