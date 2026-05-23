@@ -169,6 +169,8 @@ and the derived files
   [2022-09-21 v1.7 Handle new color stacks for pdfTeX (HO)]%
 \documentclass{ltxdoc}
 \usepackage{holtxdoc}[2011/11/22]
+\usepackage{pdfcol}
+\pdfcolInitStack{test}
 \begin{document}
   \DocInput{pdfcol.dtx}%
 \end{document}
@@ -311,58 +313,142 @@ and the derived files
 %  This can lead to the odd behaviour that a color takes it resets from the wrong stack:
 %
 %  \begin{verbatim}
-%   black           % main stack: black
-%   \color{green}
-%   green           % main stack: black, green
+% \showoutput
+%  black             % main stack: black
 %   {
-%     green
-%     \pdfcolSwitchStack{test} % test stack: black
-%     green
-%     \color{yellow} % test stack: black, yellow
-%     yellow
-%                   % End of group: switch to main stack
-%   }               % After group: color green popped from main stack
-%                   % green ends
-%                   % main stack: black
-%   after group green? No black!!
+%   \color{green}
+%    green           % main stack: black, green
+%    {
+%      green
+%      \pdfcolSwitchStack{test} % test stack: black
+%      green
+%      \color{yellow} % test stack: black, yellow
+%      yellow
+%                    % End of group: switch to main stack
+%    }               % After group: reset of 'color{yellow}'
+%                    % pops green from *main* stack and green ends
+%                    % main stack: black
+%    after group green? No black!!
+%   }  
 %  \end{verbatim}
-%  {{black           % main stack: black
-%   \color{green}
-%   green           % main stack: black, green
-%   {
-%     green
-%     \pdfcolSwitchStack{test} % test stack: black
-%     green
-%     \color{yellow} % test stack: black, yellow
-%     yellow
-%                   % End of group: switch to main stack
-%   }               % After group: color green popped from main stack
-%                   % green ends
-%                   % main stack: black
-%   after group green? No black!!}}
+%  
+%  \begin{flushleft}
+%  \sffamily 
+%  \fbox
+%  {{black \color{green} green { green \pdfcolSwitchStack{test} green \color{yellow} yellow } after group green? No black!!}}
+%  \pdfcolorstack 0 push {0 g 0 G}\pdfcolorstack 1 pop
+%  \end{flushleft}
 %
-%   To avoid such problems it is important to ensure, that colors take their
-%   reset color from the stack on which they pushed a color. This means that the
-%   stack switch must be in the outer group:
+%  If one checks with \cs{showoutput} one can see the following sequence
+%  \begin{verbatim}
+%  \pdfcolorstack 0 push {0 1 0 rg 0 1 0 RG} % from \color{green}
+%  \pdfcolorstack 1 push {0 0 1 0 k 0 0 1 0 K} % from \color{yellow}
+%  \pdfcolorstack 0 pop  % reset of \color{yellow}
+%  \pdfcolorstack 0 pop  % reset of \color{green}
+%  \end{verbatim}
+%  and pdftex complains about one \texttt{pop} too much:
+%  \begin{verbatim}
+%  pdfTeX warning: pdflatex-dev.exe: pop empty color page stack 0
+%  \end{verbatim}
+%  
+%  To avoid such problems it is important to ensure, that the 
+%  reset of colors is done from the stack on which they pushed. This means that the
+%  stack switch must outside of the group where the colors from the new stack are used:
 %
 %  \begin{verbatim}
 %   black           % main stack: black
-%   \color{green}
-%   green           % main stack: black, green
 %   {
-%     green
-%     \pdfcolSwitchStack{test} % test stack: black
-%      {
+%    \color{green}
+%     green           % main stack: black, green
+%     {
+%      green
+%      \pdfcolSwitchStack{test} % test stack: black
+%       {
 %        green
 %        \color{yellow} % test stack: black, yellow
 %        yellow         % End of group: test stack still active
-%      }
-%                   % After group: color green popped from test stack
-%                   % green ends
+%       }
+%         % After group: color yellow popped from test stack
+%     }
+%     after group green?? No still black!!
 %   }
-%   after group green?? No still black!!
 %  \end{verbatim}
 %
+%   \begin{flushleft}
+%  \sffamily 
+%  \fbox{ black { \color{green} green { green \pdfcolSwitchStack{test} {  green \color{yellow}  yellow  } }
+%     after group green?? No still black!!  } }
+%  \end{flushleft}
+%     
+%  Now the colors are popped from the correct stacks:
+% \begin{verbatim}
+%  \pdfcolorstack 0 push {0 1 0 rg 0 1 0 RG} % from \color{green}
+%  \pdfcolorstack 1 push {0 0 1 0 k 0 0 1 0 K} % from \color{yellow}
+%  \pdfcolorstack 1 pop  % reset of \color{yellow}
+%  \pdfcolorstack 0 pop  % reset of \color{green}
+%  \end{verbatim}    
+%     
+%  But this still gives green after the group: Yellow has been correctly ended but that doesn't mean that 
+%  green takes over again: The new color stack had black as starting value and this is used once the 
+%  yellow is popped. To get green again one must therefore replace the starting value of the new
+%  stack by the currently active color. For this the package offers the command \cs{pdfcolSetCurrentColor}
+%  Which replaces the current top most color of a stack by the color stored in \cs{current@color}:
+%  \begin{verbatim}
+%  black           % main stack: black
+%  {
+%   \color{green}
+%    green           % main stack: black, green
+%    {
+%     green
+%     \pdfcolSwitchStack{test} % test stack: black
+%     \pdfcolSetCurrentColor   % test stack: green
+%      {
+%       green
+%       \color{yellow} % test stack: green, yellow
+%       yellow         % End of group: test stack still active
+%      }
+%        % After group: color yellow popped from test stack, green used
+%    }
+%    after group green!!
+%  }%  
+%  \end{verbatim}
+%  
+%   \begin{flushleft}
+%  \sffamily 
+%  { black { \color{green} green { green \pdfcolSwitchStack{test}\pdfcolSetCurrentColor
+%   {  green \color{yellow}  yellow  } }
+%     after group green!!  } }
+%  \end{flushleft}
+%     
+%  An alternative method to the same effect is to take the current color from the main stack
+%  and to issue it again after the group:
+%  \begin{verbatim}
+%  black           % main stack: black
+%  {
+%   \color{green}
+%    green           % main stack: black, green
+%    {
+%     green
+%     \pdfcolSwitchStack{test} % test stack: black
+%      {
+%       green
+%       \color{yellow} % test stack: black, yellow
+%       yellow         % End of group: test stack still active
+%      }
+%        % After group: color yellow popped from test stack
+%    }%
+%    \pdfcolSetCurrent{}% set current color of main stack = green
+%    after group green!!
+%  }%  
+% \end{verbatim}    
+% 
+%   \begin{flushleft}
+%  \sffamily 
+%  { black { \color{green} green { green \pdfcolSwitchStack{test}
+%   {  green \color{yellow}  yellow  } }\pdfcolSetCurrent{}
+%     after group green!!  } }         
+%   \end{flushleft}
+%     
 % \StopEventually{
 % }
 %
