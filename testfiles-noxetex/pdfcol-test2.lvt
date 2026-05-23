@@ -11,25 +11,37 @@
 \else
  \pdfoutput 0
 \fi 
-  
+\pdffalse  
 \documentclass{article}
 \usepackage{pdfcol}[2016/05/17]
-\usepackage{qstest}
-\IncludeTests{*}
-\LogTests{log}{*}{*}
 \begin{document}\START
-  \begin{qstest}{pdfcol}{}%
-    \makeatletter
-    \Expect*{\ifpdfcolAvailable true\else false\fi}{false}%
-    \setbox0=\hbox{%
+\TEST{DVI MODE TEST}
+ {
+   \TYPE{\ifpdf PDF\else DVI\fi}
+   \ASSERT{\ifpdf PDF\else DVI\fi}{DVI}
+ }
+
+\TEST{stack unavailable?}
+ {
+   \TYPE{\ifpdfcolAvailable true\else false\fi}
+   \ASSERT{\ifpdfcolAvailable true\else false\fi}{false}%
+ }
+\TEST{dummy commands?}
+ {
+   \setbox0=\hbox{%
       \pdfcolInitStack{test}%
       \pdfcolSwitchStack{test}%
       \pdfcolSetCurrent{test}%
       \pdfcolSetCurrent{}%
-    }%
-    \Expect*{\the\wd0}{0.0pt}%
-    \Expect*{\pdfcolIfStackExists{dummy}{true}{false}}{false}%
-  \end{qstest}%
+    }%   
+   \TYPE{\the\wd0}  
+   \ASSERTSTR{\the\wd0}{0.0pt}%
+ } 
+\TEST{existence test command?}
+ {
+   \TYPE{\pdfcolIfStackExists{dummy}{true}{false}}
+   \ASSERT{\pdfcolIfStackExists{dummy}{true}{false}}{false}%
+ }
 \end{document}
 \endinput
 %%
