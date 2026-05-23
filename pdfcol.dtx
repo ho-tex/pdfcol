@@ -6,8 +6,7 @@
 %
 % Copyright (C)
 %    2007 Heiko Oberdiek
-%    2016-2022 Oberdiek Package Support Group
-%    2016-2020 Oberdiek Package Support Group
+%    2016-2026 Oberdiek Package Support Group
 %    https://github.com/ho-tex/pdfcol/issues
 %
 % This work may be distributed and/or modified under the
@@ -26,149 +25,90 @@
 % Heiko Oberdiek and the Oberdiek Package Support Group
 % https://github.com/ho-tex/pdfcol/issues
 %
-% The Base Interpreter refers to any `TeX-Format',
-% because some files are installed in TDS:tex/generic//.
 %
-% This work consists of the main source file pdfcol.dtx
+% This work consists of the main source file pdfcol.dtx, pdfcol.ins
 % and the derived files
-%    pdfcol.sty, pdfcol.pdf, pdfcol.ins, pdfcol.drv, pdfcol-test1.tex,
-%    pdfcol-test2.tex, pdfcol-test3.tex, pdfcol-test4.tex.
-%
+%    pdfcol.sty, pdfcol.pdf
+%    
 % Distribution:
 %    CTAN:macros/latex/contrib/pdfcol/pdfcol.dtx
 %    CTAN:macros/latex/contrib/pdfcol/pdfcol.pdf
 %
 % Unpacking:
 %    (a) If pdfcol.ins is present:
-%           tex pdfcol.ins
-%    (b) Without pdfcol.ins:
-%           tex pdfcol.dtx
-%    (c) If you insist on using LaTeX
-%           latex \let\install=y\input{pdfcol.dtx}
-%        (quote the arguments according to the demands of your shell)
+%           (la)tex pdfcol.ins
 %
 % Documentation:
-%    (a) If pdfcol.drv is present:
-%           latex pdfcol.drv
-%    (b) Without pdfcol.drv:
 %           latex pdfcol.dtx; ...
-%    The class ltxdoc loads the configuration file ltxdoc.cfg
-%    if available. Here you can specify further options, e.g.
-%    use A4 as paper format:
-%       \PassOptionsToClass{a4paper}{article}
 %
 %    Programm calls to get the documentation (example):
-%       pdflatex pdfcol.dtx
+%       lualatex pdfcol.dtx
 %       makeindex -s gind.ist pdfcol.idx
-%       pdflatex pdfcol.dtx
+%       lualatex pdfcol.dtx
 %       makeindex -s gind.ist pdfcol.idx
-%       pdflatex pdfcol.dtx
+%       lualatex pdfcol.dtx
 %
 % Installation:
-%    TDS:tex/generic/pdfcol/pdfcol.sty
+%    TDS:tex/latex/pdfcol/pdfcol.sty
 %    TDS:doc/latex/pdfcol/pdfcol.pdf
 %    TDS:source/latex/pdfcol/pdfcol.dtx
 %
-%<*ignore>
-\begingroup
-  \catcode123=1 %
-  \catcode125=2 %
-  \def\x{LaTeX2e}%
-\expandafter\endgroup
-\ifcase 0\ifx\install y1\fi\expandafter
-         \ifx\csname processbatchFile\endcsname\relax\else1\fi
-         \ifx\fmtname\x\else 1\fi\relax
-\else\csname fi\endcsname
-%</ignore>
-%<*install>
-\input docstrip.tex
-\Msg{************************************************************************}
-\Msg{* Installation}
-\Msg{* Package: pdfcol 2022-09-21 v1.7 Handle new color stacks for pdfTeX (HO)}
-\Msg{************************************************************************}
-
-\keepsilent
-\askforoverwritefalse
-
-\let\MetaPrefix\relax
-\preamble
-
-This is a generated file.
-
-Project: pdfcol
-Version: 2022-09-21 v1.7
-
-Copyright (C)
-   2007 Heiko Oberdiek
-   2016-2022 Oberdiek Package Support Group
-
-This work may be distributed and/or modified under the
-conditions of the LaTeX Project Public License, either
-version 1.3c of this license or (at your option) any later
-version. This version of this license is in
-   https://www.latex-project.org/lppl/lppl-1-3c.txt
-and the latest version of this license is in
-   https://www.latex-project.org/lppl.txt
-and version 1.3 or later is part of all distributions of
-LaTeX version 2005/12/01 or later.
-
-This work has the LPPL maintenance status "maintained".
-
-The Current Maintainers of this work are
-Heiko Oberdiek and the Oberdiek Package Support Group
-https://github.com/ho-tex/pdfcol/issues
-
-
-The Base Interpreter refers to any `TeX-Format',
-because some files are installed in TDS:tex/generic//.
-
-This work consists of the main source file pdfcol.dtx
-and the derived files
-   pdfcol.sty, pdfcol.pdf, pdfcol.ins, pdfcol.drv, pdfcol-test1.tex,
-   pdfcol-test2.tex, pdfcol-test3.tex, pdfcol-test4.tex.
-
-\endpreamble
-\let\MetaPrefix\DoubleperCent
-
-\generate{%
-  \file{pdfcol.ins}{\from{pdfcol.dtx}{install}}%
-  \file{pdfcol.drv}{\from{pdfcol.dtx}{driver}}%
-  \usedir{tex/generic/pdfcol}%
-  \file{pdfcol.sty}{\from{pdfcol.dtx}{package}}%
-%  \usedir{doc/latex/pdfcol/test}%
-%  \file{pdfcol-test1.tex}{\from{pdfcol.dtx}{test1}}%
-%  \file{pdfcol-test2.tex}{\from{pdfcol.dtx}{test2}}%
-%  \file{pdfcol-test3.tex}{\from{pdfcol.dtx}{test3}}%
-%  \file{pdfcol-test4.tex}{\from{pdfcol.dtx}{test4}}%
-}
-
-\catcode32=13\relax% active space
-\let =\space%
-\Msg{************************************************************************}
-\Msg{*}
-\Msg{* To finish the installation you have to move the following}
-\Msg{* file into a directory searched by TeX:}
-\Msg{*}
-\Msg{*     pdfcol.sty}
-\Msg{*}
-\Msg{* To produce the documentation run the file `pdfcol.drv'}
-\Msg{* through LaTeX.}
-\Msg{*}
-\Msg{* Happy TeXing!}
-\Msg{*}
-\Msg{************************************************************************}
-
-\endbatchfile
-%</install>
-%<*ignore>
-\fi
-%</ignore>
 %<*driver>
-\NeedsTeXFormat{LaTeX2e}
-\ProvidesFile{pdfcol.drv}%
-  [2022-09-21 v1.7 Handle new color stacks for pdfTeX (HO)]%
-\documentclass{ltxdoc}
-\usepackage{holtxdoc}[2011/11/22]
+\DocumentMetadata{tagging=on}
+\documentclass{l3in2edoc}
+\DeclareDocElement[printtype=\textit{key},idxtype=key,idxgroup=Keys]{Key}{keydecl}
+\NewDocumentCommand\xoption{m}{\textsf{#1\DescribeKey[noprint]{#1}}}
+
+\newcommand*{\xpackage}[1]{\textsf{#1}}
+\newcommand*{\xmodule}[1]{\textsf{#1}}
+\newcommand*{\xclass}[1]{\textsf{#1}}
+\newcommand*{\xfile}[1]{\texttt{#1}}
+\newcommand*{\xext}[1]{\texttt{.#1}}
+\newcommand*{\xemail}[1]{%
+  \textless\texttt{#1}\textgreater%
+}
+\newcommand*{\xnewsgroup}[1]{%
+  \href{news:#1}{\nolinkurl{#1}}%
+}
+\newcommand*{\CTANpkg}[1]{%
+  \href{http://ctan.org/pkg/#1}{\nolinkurl{CTAN:pkg/#1}}%
+}
+\newcommand*{\CTAN}[1]{%
+  \href{https://ctan.org/tex-archive/#1}{\nolinkurl{CTAN:#1}}%
+}
+\providecommand*{\docstrip}{\textsf{docstrip}}
+\providecommand*{\mikTeX}{\hologo{MiKTeX}}
+
+
+
+\newenvironment{Version}[1]
+  {\subsection*[toc={[#1]}]{[#1]}\begin{itemize}}
+  {\end{itemize}} 
+\newenvironment{History}
+ {\section{History}\raggedright}{}
+
+\usepackage{etoolbox}
+% get rid of index entries from macrocode environments
+% 
+\ExplSyntaxOn\makeatletter
+\bool_new:N\l__pdfcol_index_macrocode_bool
+\DeclareKeys [ pdfcol / doc ]
+ {
+  index-macrocode .bool_set:N=\l__pdfcol_index_macrocode_bool,
+  index-macrocode .initial:n=true
+ }
+\patchcmd \__codedoc_special_index_aux:nnnnnn
+  {\__codedoc_index_codeline_hc:nn}
+  {
+   \bool_if:NTF\l__pdfcol_index_macrocode_bool
+   {\__codedoc_index_codeline_hc:nn}
+   {\use_none:nn}
+  }
+  {}
+  {\fail}
+\SetKeys[pdfcol/doc]{index-macrocode=false}  
+\ExplSyntaxOff\makeatother
+
 \usepackage{pdfcol}
 \pdfcolInitStack{test}
 \begin{document}
@@ -176,10 +116,6 @@ and the derived files
 \end{document}
 %</driver>
 % \fi
-%
-%
-%
-% \GetFileInfo{pdfcol.drv}
 %
 % \title{The \xpackage{pdfcol} package}
 % \date{2022-09-21 v1.7}
@@ -236,27 +172,33 @@ and the derived files
 %
 % \subsection{Interface}
 %
-% \begin{declcs}{ifpdfcolAvailable}
-% \end{declcs}
+% \begin{function}{\ifpdfcolAvailable}
+% \begin{syntax}
+% \cs{ifpdfcolAvailable}\meta{true}\cs{else}\meta{false}\cs{fi}
+% \end{syntax}
 % If the requirements of section \ref{sec:req} are met the
 % switch \cs{ifpdfcolAvailable} behaves as \cs{iftrue}.
 % Otherwise the other interface macros in this section will
 % be disabled with a message. Also the first use of such a
 % macro will print a message. The messages are print to
 % the \xext{log} file only if \pdfTeX\ and lua\TeX\ not used in PDF mode.
+% \end{function}
 %
-% \begin{declcs}{pdfcolErrorNoStacks}
-% \end{declcs}
+% \begin{function}{\pdfcolErrorNoStacks}
 % The first call of \cs{pdfcolErrorNoStacks} prints an error
 % message, if color stacks are not available.
+% \end{function}
 %
-% \begin{declcs}{pdfcolInitStack} \M{name}
-% \end{declcs}
+% \begin{function}{\pdfcolInitStack}
+% \begin{syntax}
+% \cs{pdfcolInitStack}\Arg{name}
+% \end{syntax}
 % A new color stack is initialized by \cs{pdfcolInitStack}.
 % The \meta{name} is used for identifying the stack. It usually
-% consists of letters and digits. (The name must survive a \cs{csname}.)
+% consists of letters and digits. (The name must survive a \cs[no-index]{csname}.)
+% \end{function}
 %
-% The intension of the macro is the definition of an additional
+% The intention of the macro is the definition of an additional
 % color stack. Thus the stack is not page bounded like the
 % main color stack. Black (\texttt{0 g 0 G}) is used as initial
 % color value. And colors are written with modifier \texttt{direct}
@@ -264,40 +206,37 @@ and the derived files
 % the current point (see documentation of \pdfTeX\ for
 % |\pdfliteral direct{...}|).
 %
-% \begin{declcs}{pdfcolIfStackExists} \M{name} \M{then} \M{else}
-% \end{declcs}
+% \begin{function}{\pdfcolIfStackExists}
+% \begin{syntax}
+% \cs{pdfcolIfStackExists} \Arg{name} \Arg{true} \Arg{false}
+% \end{syntax}
 % Macro \cs{pdfcolIfStackExists} checks whether color stack \meta{name}
 % exists. In case of success argument \meta{then} is executed
 % and \meta{else} otherwise.
+% \end{function}
 %
-% \begin{declcs}{pdfcolSwitchStack} \M{name}
-% \end{declcs}
+% \begin{function}{\pdfcolSwitchStack} 
+% \begin{syntax}
+% \cs{pdfcolSwitchStack}\Arg{name}
+% \end{syntax}
 % Macro \cs{pdfcolSwitchStack} switches the color stack. The color macros
-% of package \xpackage{color} (or \xpackage{xcolor}) now uses the
-% new color stack with name \meta{name}.
+% of package \xpackage{color}, \xpackage{xcolor} and the \xpackage{l3color}
+% module now uses the new color stack with name \meta{name}.
+% \end{function}
 %
-%
-% \begin{declcs}{pdfcolCurrentStack}
-% \end{declcs}
-% This variable holds the name of the current stack \emph{after} a switch with
-% \cs{pdfcolSwitchStack}.
-%
-% \begin{declcs}{pdfcolSetCurrentColor}
-% \end{declcs}
+% \begin{function}{\pdfcolSetCurrentColor}
 % Macro \cs{pdfcolSetCurrentColor} replaces the topmost
 % entry of the stack by the current color (\cs{current@color}).
+% \end{function}
 %
-% \begin{declcs}{pdfcolSetCurrent} \M{name}
-% \end{declcs}
+% \begin{function}{\pdfcolSetCurrent} 
+% \begin{syntax}
+% \cs{pdfcolSetCurrent}\Arg{name}
+% \end{syntax}
 % Macro \cs{pdfcolSetCurrent} sets the color that is read in
 % the top-most entry of color stack \meta{name}. If \meta{name}
 % is empty, the default color stack is used.
-%
-% \begin{declcs}{pdfcolAftergroupSetCurrent}
-% \end{declcs}
-%  Macro \cs{pdfcolSetCurrent} sets after the current group
-%  the color that is read in the top-most entry of the current color stack
-%  (as stored in \cs{pdfcolCurrentStack}).
+% \end{function}
 %
 %  \subsection{Example (for \LaTeX)}
 %
@@ -306,7 +245,7 @@ and the derived files
 %  Unless the package \xpackage{luacolor} is used these commands do \emph{not} naturally
 %  respect \TeX\ groups, instead they insert literals into the PDF that start a color
 %  and the color must be reset to get back to the previous. This
-%  is typically done with a command that is inserted with \cs{aftergroup}
+%  is typically done with a command that is inserted with \cs[no-index]{aftergroup}
 %  \emph{after} the enclosing group.
 %  The command  \cs{pdfcolSwitchStack} on the other hand switches the color stack locally:
 %  At the end of the enclosing group the stack is switched back again.
@@ -331,13 +270,6 @@ and the derived files
 %    after group green? No black!!
 %   }  
 %  \end{verbatim}
-%  
-%  \begin{flushleft}
-%  \sffamily 
-%  \fbox
-%  {{black \color{green} green { green \pdfcolSwitchStack{test} green \color{yellow} yellow } after group green? No black!!}}
-%  \pdfcolorstack 0 push {0 g 0 G}\pdfcolorstack 1 pop
-%  \end{flushleft}
 %
 %  If one checks with \cs{showoutput} one can see the following sequence
 %  \begin{verbatim}
@@ -374,7 +306,7 @@ and the derived files
 %   }
 %  \end{verbatim}
 %
-%   \begin{flushleft}
+%  \begin{flushleft}
 %  \sffamily 
 %  \fbox{ black { \color{green} green { green \pdfcolSwitchStack{test} {  green \color{yellow}  yellow  } }
 %     after group green?? No still black!!  } }
@@ -386,13 +318,13 @@ and the derived files
 %  \pdfcolorstack 1 push {0 0 1 0 k 0 0 1 0 K} % from \color{yellow}
 %  \pdfcolorstack 1 pop  % reset of \color{yellow}
 %  \pdfcolorstack 0 pop  % reset of \color{green}
-%  \end{verbatim}    
+% \end{verbatim}    
 %     
 %  But this still gives green after the group: Yellow has been correctly ended but that doesn't mean that 
 %  green takes over again: The new color stack had black as starting value and this is used once the 
 %  yellow is popped. To get green again one must therefore replace the starting value of the new
 %  stack by the currently active color. For this the package offers the command \cs{pdfcolSetCurrentColor}
-%  Which replaces the current top most color of a stack by the color stored in \cs{current@color}:
+%  which replaces the current top most color of a stack by the color stored in \cs{current@color}:
 %  \begin{verbatim}
 %  black           % main stack: black
 %  {
@@ -453,7 +385,7 @@ and the derived files
 % }
 %
 % \section{Implementation}
-%
+% \DoNotIndex{\\}
 %    \begin{macrocode}
 %<*package>
 %    \end{macrocode}
@@ -583,7 +515,7 @@ and the derived files
 %
 % \subsection{Check requirements}
 %
-%    \begin{macro}{\PDFCOL@RequirePackage}
+%    \begin{macro}[int]{\PDFCOL@RequirePackage}
 %    \begin{macrocode}
 \ifcsname RequirePackage\endcsname
   \def\PDFCOL@RequirePackage#1[#2]{%
@@ -607,7 +539,7 @@ and the derived files
 \PDFCOL@RequirePackage{ltxcmds}[2010/03/01]
 %    \end{macrocode}
 %
-%    \begin{macro}{ifpdfcolAvailable}
+%    \begin{macro}{\ifpdfcolAvailable}
 %    \begin{macrocode}
 \ltx@newif\ifpdfcolAvailable
 \pdfcolAvailabletrue
@@ -706,7 +638,7 @@ and the derived files
 %    \end{macrocode}
 %    \end{macro}
 %
-%    \begin{macro}{\pdfcol@Value}
+%    \begin{macro}[int]{\pdfcol@Value}
 %    \begin{macrocode}
   \expandafter\ifx\csname pdfcol@Value\endcsname\relax
     \def\pdfcol@Value{0 g 0 G}%
@@ -714,7 +646,7 @@ and the derived files
 %    \end{macrocode}
 %    \end{macro}
 %
-%    \begin{macro}{\pdfcol@LiteralModifier}
+%    \begin{macro}[int]{\pdfcol@LiteralModifier}
 %    \begin{macrocode}
   \expandafter\ifx\csname pdfcol@LiteralModifier\endcsname\relax
     \def\pdfcol@LiteralModifier{direct}%
@@ -752,30 +684,28 @@ and the derived files
   }%
 %    \end{macrocode}
 %    \end{macro}
-%    \begin{macro}{\@firstoftwo}
+%    \begin{macro}[int]{\@firstoftwo}
 %    \begin{macrocode}
-  \expandafter\ifx\csname @firstoftwo\endcsname\relax
+  \ifcsname @firstoftwo\endcsname
     \long\def\@firstoftwo#1#2{#1}%
   \fi
 %    \end{macrocode}
 %    \end{macro}
-%    \begin{macro}{\@secondoftwo}
+%    \begin{macro}[int]{\@secondoftwo}
 %    \begin{macrocode}
-  \expandafter\ifx\csname @secondoftwo\endcsname\relax
+  \ifcsname @secondoftwo\endcsname
     \long\def\@secondoftwo#1#2{#2}%
   \fi
 %    \end{macrocode}
 %    \end{macro}
 %
-%    \begin{macro}{\pdfcolSwitchStack,\pdfcolCurrentStack}
+%    \begin{macro}{\pdfcolSwitchStack}
 %    \begin{macrocode}
-  \def\pdfcolCurrentStack{}
   \def\pdfcolSwitchStack#1{%
     \pdfcolIfStackExists{#1}{%
       \expandafter\let\expandafter\@pdfcolorstack
                       \csname pdfcol@Stack@#1\endcsname
       \pdfcol@switch@kernel@colorstack{#1}%
-      \def\pdfcolCurrentStack{#1}%
     }{%
       \pdfcol@ErrorNoStack{#1}%
     }%
@@ -808,15 +738,7 @@ and the derived files
 %    \end{macrocode}
 %    \end{macro}
 %
-%    \begin{macro}{\pdfcolAftergroupSetCurrent}
-%    \begin{macrocode}
-  \def\pdfcolAftergroupSetCurrent{%
-   \aftergroup\pdfcol@aftergroupsetcurrent}
-  \def\pdfcol@aftergroupsetcurrent{%
-   \expandafter\pdfcolSetCurrent\expandafter{\pdfcolCurrentStack}}
-%    \end{macrocode}
-%    \end{macro}
-%    \begin{macro}{\pdfcol@ErrorNoStack}
+%    \begin{macro}[int]{\pdfcol@ErrorNoStack}
 %    \begin{macrocode}
   \def\pdfcol@ErrorNoStack#1{%
     \@PackageError{pdfcol}{Stack `#1' does not exists}\@ehc
@@ -850,7 +772,7 @@ and the derived files
 %    \end{macrocode}
 %    \end{macro}
 %
-%    \begin{macro}{\PDFCOL@Disabled}
+%    \begin{macro}[int]{\PDFCOL@Disabled}
 %    \begin{macrocode}
   \def\PDFCOL@Disabled{%
     \PDFCOL@Message{%
@@ -921,86 +843,24 @@ and the derived files
 %
 % \subsection{Package installation}
 %
-% \paragraph{Unpacking.} The \xfile{.dtx} file is a self-extracting
-% \docstrip\ archive. The files are extracted by running the
-% \xfile{.dtx} through \plainTeX:
-% \begin{quote}
-%   \verb|tex pdfcol.dtx|
-% \end{quote}
+% The easiest is to use the package manager from your TeX system. If
+% you want to install manually:
+% 
+% \paragraph{Unpacking.} The \xfile{.dtx} file is 
+% \docstrip\ archive. The files are extracted from the \xfile{.dtx}
+% by compiling the file with some TeX program.
 %
 % \paragraph{TDS.} Now the different files must be moved into
 % the different directories in your installation TDS tree
 % (also known as \xfile{texmf} tree):
 % \begin{quote}
-% \def\t{^^A
 % \begin{tabular}{@{}>{\ttfamily}l@{ $\rightarrow$ }>{\ttfamily}l@{}}
-%   pdfcol.sty & tex/generic/pdfcol/pdfcol.sty\\
+%   pdfcol.sty & tex/latex/pdfcol/pdfcol.sty\\
 %   pdfcol.pdf & doc/latex/pdfcol/pdfcol.pdf\\
 %   pdfcol.dtx & source/latex/pdfcol/pdfcol.dtx\\
-% \end{tabular}^^A
-% }^^A
-% \sbox0{\t}^^A
-% \ifdim\wd0>\linewidth
-%   \begingroup
-%     \advance\linewidth by\leftmargin
-%     \advance\linewidth by\rightmargin
-%   \edef\x{\endgroup
-%     \def\noexpand\lw{\the\linewidth}^^A
-%   }\x
-%   \def\lwbox{^^A
-%     \leavevmode
-%     \hbox to \linewidth{^^A
-%       \kern-\leftmargin\relax
-%       \hss
-%       \usebox0
-%       \hss
-%       \kern-\rightmargin\relax
-%     }^^A
-%   }^^A
-%   \ifdim\wd0>\lw
-%     \sbox0{\small\t}^^A
-%     \ifdim\wd0>\linewidth
-%       \ifdim\wd0>\lw
-%         \sbox0{\footnotesize\t}^^A
-%         \ifdim\wd0>\linewidth
-%           \ifdim\wd0>\lw
-%             \sbox0{\scriptsize\t}^^A
-%             \ifdim\wd0>\linewidth
-%               \ifdim\wd0>\lw
-%                 \sbox0{\tiny\t}^^A
-%                 \ifdim\wd0>\linewidth
-%                   \lwbox
-%                 \else
-%                   \usebox0
-%                 \fi
-%               \else
-%                 \lwbox
-%               \fi
-%             \else
-%               \usebox0
-%             \fi
-%           \else
-%             \lwbox
-%           \fi
-%         \else
-%           \usebox0
-%         \fi
-%       \else
-%         \lwbox
-%       \fi
-%     \else
-%       \usebox0
-%     \fi
-%   \else
-%     \lwbox
-%   \fi
-% \else
-%   \usebox0
-% \fi
+% \end{tabular}
 % \end{quote}
-% If you have a \xfile{docstrip.cfg} that configures and enables \docstrip's
-% TDS installing feature, then some files can already be in the right
-% place, see the documentation of \docstrip.
+%
 %
 % \subsection{Refresh file name databases}
 %
@@ -1009,40 +869,17 @@ and the derived files
 % these. For example, \TeX\,Live\ users run \verb|texhash| or
 % \verb|mktexlsr|.
 %
-% \subsection{Some details for the interested}
-%
-% \paragraph{Unpacking with \LaTeX.}
-% The \xfile{.dtx} chooses its action depending on the format:
-% \begin{description}
-% \item[\plainTeX:] Run \docstrip\ and extract the files.
-% \item[\LaTeX:] Generate the documentation.
-% \end{description}
-% If you insist on using \LaTeX\ for \docstrip\ (really,
-% \docstrip\ does not need \LaTeX), then inform the autodetect routine
-% about your intention:
-% \begin{quote}
-%   \verb|latex \let\install=y\input{pdfcol.dtx}|
-% \end{quote}
-% Do not forget to quote the argument according to the demands
-% of your shell.
-%
+
 % \paragraph{Generating the documentation.}
-% You can use both the \xfile{.dtx} or the \xfile{.drv} to generate
-% the documentation. The process can be configured by the
-% configuration file \xfile{ltxdoc.cfg}. For instance, put this
-% line into this file, if you want to have A4 as paper format:
-% \begin{quote}
-%   \verb|\PassOptionsToClass{a4paper}{article}|
-% \end{quote}
-% An example follows how to generate the
-% documentation with pdf\LaTeX:
+% You can use the \xfile{.dtx} to generate
+% the documentation. 
 % \begin{quote}
 %\begin{verbatim}
-%pdflatex pdfcol.dtx
-%makeindex -s gind.ist pdfcol.idx
-%pdflatex pdfcol.dtx
-%makeindex -s gind.ist pdfcol.idx
-%pdflatex pdfcol.dtx
+% lualatex pdfcol.dtx
+% makeindex -s gind.ist pdfcol.idx
+% lualatex pdfcol.dtx
+% makeindex -s gind.ist pdfcol.idx
+% lualatex pdfcol.dtx
 %\end{verbatim}
 % \end{quote}
 %

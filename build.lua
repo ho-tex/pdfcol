@@ -6,7 +6,6 @@ module = "pdfcol"
 
 
 textfiles = {"README.md"}
-unpackfiles = {'pdfcol.dtx'}
 
 packtdszip  = false
 
@@ -19,8 +18,23 @@ tdslocations={
 "tex/latex/pdfcol/pdfcol.sty",
 }
 
+specialformats = specialformats or {}
+specialformats["latex"] = specialformats["latex"] or
+  {
+    luatex     = {binary="luahbtex",format = "lualatex-dev"},
+  }
+
+typesetexe = "lualatex-dev"
+typesetruns = 4
+
+function docinit_hook() 
+return cp("pdfcol.sty", unpackdir, typesetdir) end
+
 
 checkconfigs = {"build","config-noxetex","config-luatex"}
+
+tagfiles={"README.md", "*.dtx", "*.ins"}
+
 
 function update_tag(file,content,tagname,tagdate)
 
