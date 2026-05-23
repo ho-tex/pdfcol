@@ -1,0 +1,46 @@
+\input{regression-test}
+\documentclass{article}
+\usepackage{pdfcol}
+\ExplSyntaxOn
+\let\newcolor\color_select:n
+\ExplSyntaxOff
+\pdfcolInitStack{test}
+\begin{document}
+\START\showoutput
+  black           % main stack: black
+  {
+   \newcolor{green}
+    green           % main stack: black, green
+    {
+     green
+     \pdfcolSwitchStack{test} % test stack: black
+     \pdfcolSetCurrentColor   % test stack: green
+      {
+       green
+       \newcolor{yellow} % test stack: green, yellow
+       yellow         % End of group: test stack still active
+      }
+        % After group: color yellow popped from test stack, green used
+    }
+    after group green!!
+  }%  
+
+
+  black           % main stack: black
+  {
+   \color{green}
+    green           % main stack: black, green
+    {
+     green
+     \pdfcolSwitchStack{test} % test stack: black
+     \pdfcolSetCurrentColor   % test stack: green
+      {
+       green
+       \color{yellow} % test stack: green, yellow
+       yellow         % End of group: test stack still active
+      }
+        % After group: color yellow popped from test stack, green used
+    }
+    after group green!!
+  }%  
+\end{document}
