@@ -601,20 +601,7 @@
      \def\pdfcol@switch@kernel@colorstack#1%
       {\csname l__color_backend_stack_int\endcsname =\csname pdfcol@Stack@#1\endcsname}
 %    \end{macrocode}
-% For the \cs{pdfcolSetCurrentColor} command we need to export the backend setting into
-% \cs{current@color}:
 %    \begin{macrocode}
-     \ExplSyntaxOn
-     \cs_new_protected:Npn\pdfcol@define@current@color
-      {
-       \group_begin:
-        \cs_set_protected:Npn\__color_backend_select:nn##1##2{\tl_gset:Nn\pdfcol@current@color{##1~##2}}
-        \exp_after:wN \__color_select:nn \l__color_current_tl
-       \group_end:
-       \cs_set_eq:NN\current@color\pdfcol@current@color
-      }
-     \pretocmd\__color_finalize_current:{\pdfcol@define@current@color}{}{\fail}
-     \ExplSyntaxOff
    \else
      \def\pdfcol@switch@kernel@colorstack#1{}
    \fi
