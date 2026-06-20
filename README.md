@@ -1,6 +1,6 @@
 # pdfcol
 
-Version: 2026-05-23 v1.8
+Version: 2026-06-20 v1.8
 
 Macros for setting and maintaining new color stacks.
 
