@@ -22,6 +22,7 @@ specialformats = specialformats or {}
 specialformats["latex"] = specialformats["latex"] or
   {
     luatex     = {binary="luahbtex",format = "lualatex-dev"},
+    pdftex     = {binary="pdftex",format = "pdflatex-dev"},
   }
 
 typesetexe = "lualatex-dev"
